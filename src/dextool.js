@@ -27,7 +27,7 @@ const displayChainData = function (list) {
         <div class="chain">
             <div class="chain_brand">
               <div class="chain_logo">
-                <img src="./public/images/chains/${i}.png" alt="">
+                <img src="../public/images/chains/${i}.png" alt="">
               </div>
               <div class="chain_name">
                 <h2>Ethereum Sepolia</h2>
