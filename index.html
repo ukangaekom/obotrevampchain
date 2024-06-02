@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="src/styles/layout.css">
+    <link rel="stylesheet" href="src/styles/navigation.css">
+    <link rel="stylesheet" href="src/styles/homePage.css">
+    <link rel="stylesheet" href="src/styles/marketplacePage.css">
+    <link rel="stylesheet" href="src/styles/projectPage.css">
+    <link rel="stylesheet" href="src/styles/images.css">
+    <link rel="stylesheet" href="src/styles/render.css">
+    <title>Obot Revamp Chain</title>
+</head>
+<body>
+  <main>
+    <div class="nav_container">
+      <div class="nav_image">
+        <img src="./public/images/orc/obotrevamp2chain.png" alt="orchain">
+      </div>
+      <div class="nav_menu">
+        <ul>
+          <li class="nav_button home">Home</li>
+          <li class="nav_button marketplace">Marketplace</li>
+        </ul>
+
+        <ul>
+
+          <button class="nav_button" id="connect_wallet"> Connect</button>
+        </ul>
+        <ul>  
+          <li class="nav_button settings">settings</li>
+        </ul>
+
+
+      </div>
+    </div>
+    <div class="view_page">
+      <div class="home_page ">
+        <div class="home_page_image"></div>
+        <div class="home_page_content"></div>
+      </div>
+      <div class="market_page view">
+        <div class="market_place agro">
+          <div class="project_component">
+            <div class="project_image">
+              <img src="public/images/cocoaland/cocoaL4.png" alt="cocoaland">
+            </div>  
+            <div class="project_description">
+              <div class="project_header">
+                <h1>Cocoa Land</h1>
+              </div>
+              <div class="project_content">
+                <p>Buy shares, tokens, cocoa beans and trade your shares across multiple blockchain
+                  with cross-chain dynamic and infographic NFTs.  
+                </p>
+              </div>
+            </div>
+            <div class="project_actions">
+              <button class="project">Trade📈</button>
+            </div>
+          </div>
+        </div>
+        <div class="market_place waste"></div>
+        <div class="market_place ecology"></div>
+      </div>
+      <div class="project_page view">
+        <div class="project_hero_image">
+          <div class="project_profile_image">
+            <img src="./public/images/cocoaland/cocoaL2.png" alt="cocoa land">
+          </div>
+          
+        </div>
+
+        <div class="heading">
+          <h1 class="heading_text">Multi Chain Data</h1>
+        </div>
+        <div class="project_chain_info">
+          <div class="chain">
+            <div class="chain_brand">
+              <div class="chain_logo">
+                <img src="./public/images/chains/Ethereum.png" alt="">
+              </div>
+              <div class="chain_name">
+                <h2>Ethereum Sepolia</h2>
+              </div>
+            </div>
+            <div class="circulating_supply data_box">
+              <h2 class="data_feature">Circulating:</h2>  
+              <h2 class="data">10000000</h2> 
+            </div>
+            <div class="uncirculating_supply data_box">
+              <h2 class="data_feature">Locked:</h2>
+              <h2 class="data">10000000</h2> 
+            </div>
+            <div class="pool_liquidity data_box">
+              <h2 class="data_feature">Liqudity:</h2>
+              <h2 class="data">#10000000</h2> 
+            </div>
+            <div class="minted_nfts data_box data_box">
+              <h2 class="data_feature">MintedNFTs:</h2>
+              <h2 class="data">100</h2> 
+            </div>
+            <div class="unminted_nfts data_box">
+              <h2 class="data_feature">UnmintedNFTs:</h2>
+              <h2 class="data">100</h2> 
+            </div>
+          </div>
+        </div>
+
+        <div class="heading">
+          <h1 class="heading_text">Trading Section</h1>
+        </div>
+        <div class="project_trade">
+          <div class="trade_shares trade_box">
+            <div class="header">
+              <h1>Buy Shares📈 + NFT🏖️</h1>
+            </div>
+            <div class="trade_network">
+             <form action="#">
+                <label for="network" class="network_label">🔗</label>
+                <select name="chain" id="chain">
+                  <option value="Ethereum">Ethereum</option>
+                  <option value="Avalanche">Avalanche</option>
+                  <option value="Polygon">Polygon</option>
+                  <option value="Base">Base</option>
+                   
+                </select>
+              </form>
+            </div>
+            <div class="estimation_board">
+                <h1>$1000</h1>
+            </div>
+            <form action="#" class="purchase_form">
+
+              <input type="text" placeholder="0.00" id="share_input" class="share_input" value="">
+            </form>
+            <div class="trade_action">
+              <button class="buy buy_shares">Buy</button>
+              <button class="sell sell_shares">Sell</button>
+            </div>
+          </div>
+          <div class="trade_tokens trade_box">
+            <div class="header">
+              <h1>Buy Tokens💰</h1>
+            </div>
+            <div class="trade_network">
+             <form action="#">
+                <label for="network" class="network_label">🔗</label>
+                <select name="chain" id="chain">
+                  <option value="Ethereum">Ethereum</option>
+                  <option value="Avalanche">Avalanche</option>
+                  <option value="Polygon">Polygon</option>
+                  <option value="Base">Base</option>
+                   
+                </select>
+              </form>
+            </div>
+             <div class="estimation_board">
+              <h1>$1000</h1>
+            </div>
+
+            <form action="#" class="purchase_form">
+              <input type="text" placeholder="0.00" class="token_input" value="">
+            </form>
+            <div class="trade_action">
+              <button class="buy buy_token">Buy</button>
+              <button class="sell sell_token">Sell</button>
+            </div>
+          </div>
+          <div class="trade_cocoa trade_box">
+            <div class="header">
+              <h1>Buy Cocoa🍫</h1>
+            </div>
+            <div class="trade_network">
+             <form action="#">
+                <label for="network" class="network_label">🔗</label>
+                <select name="chain" id="chain">
+                  <option value="Ethereum">Ethereum</option>
+                  <option value="Avalanche">Avalanche</option>
+                  <option value="Polygon">Polygon</option>
+                  <option value="Base">Base</option>
+                   
+                </select>
+              </form>
+            </div>
+             <div class="estimation_board">
+                <h1>$1000</h1>
+            </div>
+            <form action="#" class="purchase_form">
+              <input type="text" placeholder="0.00" class="cocoa_input" value="">
+            </form>
+            <div class="trade_action">
+              <button class="buy buy_cocoa">Buy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="settings_page view"></div>
+    </div>
+        
+
+
+
+
+
+
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js"></script>
+  <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+  <script src="./src/dextool.js"></script>  
+  <script src="./src/connect.js"></script>  
+  <script src="./src/dom.js"></script>   
+  
+</body>
+</html>

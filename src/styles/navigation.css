@@ -1,0 +1,51 @@
+.nav_image{
+    height:20vh;
+    width:100%;
+    background:purple;
+
+}
+
+.nav_menu{
+    display:flex;
+    flex-flow: column nowrap;
+    justify-content:flex-start;
+    height:80vh;
+    width:100%;
+    padding:0;
+    background-color:rgb(1, 1, 15);
+    box-sizing:border-box;
+
+    
+}
+
+.nav_menu ul{
+    display: flex;
+    flex-flow:column nowrap;
+    align-items:flex-start;
+    justify-content: flex-start;
+    align-items:flex-start;
+    width:auto;
+    margin:0;
+    padding:0;
+    list-style-type: none;
+    margin:3rem 0;  
+    
+}
+
+.nav_button{
+    display: flex;
+    align-self:flex-start;
+    width: 90%;
+    height:3.5rem;
+    color:white;    
+    background-color: rgb(42, 36, 122);
+    margin:0.5rem 2rem;
+    justify-content: center;
+    align-items: center;
+    font-size:2em;
+    font-style:bold;
+    border-radius:2rem;
+    border:none;
+}
+
+

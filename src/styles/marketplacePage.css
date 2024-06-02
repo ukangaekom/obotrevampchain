@@ -1,0 +1,79 @@
+.market_page{
+    display:flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+    max-width:100%;
+    margin:0;
+    overflow:hidden;
+    padding:2rem;   
+}
+
+
+.market_place{
+    display:flex;
+    flex-flow:row nowrap;
+    width:auto;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    margin:0;
+    gap:0.5rem;
+
+}
+
+
+.market_place .project_component{
+    width:26rem;
+    height:26rem;
+    background-color: blue;
+    border-radius:1rem;
+    overflow:hidden;
+    background-color: transparent;
+    cursor:pointer;
+    
+}
+
+.project_component .project_description{
+    width: 100%;
+    height:35%;
+    margin: 0;
+    background-color:white;
+}
+
+.project_component .project_actions{
+    display: flex;
+    align-items: center;
+    width:100%;
+    height:15%;
+    
+}
+
+.project_component .project_actions button{
+    width:110%;
+    height: 100%;
+    font-size:1.5rem;
+    border: none;
+    color:white;
+    background-color:red    ;
+    font-weight:700;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.project_description .project_header{
+    padding:0 0.5rem;
+}
+.project_description .project_header h1{
+    font-size:2rem;
+    font-style:bold;
+}
+
+.project_description .project_content{
+    padding:0.5rem;
+}
+
+.project_description .project_content p{
+    font-size: 1.4rem;
+    font-weight: 50 0;
+
+}

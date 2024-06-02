@@ -1,0 +1,262 @@
+.project_page{
+    display:flex;
+    flex-flow:column nowrap;
+    width:100%;
+    height:auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.project_page .heading{
+    display: flex;
+    flex-flow:column nowrap;
+    justify-content: center;
+    align-items:center;
+    width:100%;
+    height:auto;
+    margin:2rem;
+    
+
+}
+
+.project_page .heading .heading_text{
+    font-size: 3rem;
+    color:white;
+}
+
+.project_page .project_hero_image{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    width:100%;
+    height:25vh;    
+    overflow:visible;
+    
+    background: url('../../public/images/cocoaland/cocoaL4.png');
+    background-size: cover;
+    margin:0 0 10rem 0; 
+
+}
+
+
+
+.project_page .project_hero_image .project_profile_image{
+    width:20rem;
+    height:20rem;
+    border-radius:50%;
+    position:static;
+    margin: 0 0 -10rem 0;
+    background-color:black;
+    border:0.2rem solid white;
+    box-sizing: border-box;
+}
+
+.project_page .project_hero_image .project_profile_image img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+}
+
+.project_chain_info{
+    display:flex;
+    flex-flow: row wrap;
+    align-items:center;
+    justify-content:space-evenly;
+    width:100%;
+    height: auto;
+    margin:0 0 5vh 0;
+
+}
+
+.project_page .project_chain_info .chain{
+    display:flex;
+    flex-flow: row wrap;
+    align-items:center;
+    justify-content:center;
+    width:25rem;
+    height:30rem;
+    background-color:pink;
+    box-sizing: border-box;
+    border-radius:5%;
+    margin:1rem;
+
+}
+
+.project_page .chain .chain_brand{
+    display:flex;
+    flex-flow:column nowrap;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    height:30%;
+    box-sizing: border-box;
+    margin:0;
+}
+
+.project_page .chain .chain_brand .chain_logo{
+    width:20%;
+    height:55%;
+    overflow:hidden;
+    box-sizing: border-box;
+    border-radius:100%;
+
+}
+
+.project_page .chain .chain_brand .chain_logo img{
+    width:100%;
+    height:100%;
+}
+
+.project_page .chain .data_box{
+    display:flex;
+    flex-flow:row wrap;
+    justify-content:flex-start;
+    align-items:center;
+    margin:0 0 0 1rem;
+    width:100%;
+}
+
+
+
+.project_trade {
+    display:flex;
+    flex-flow:row wrap;
+    justify-content: center;
+    align-items: center;
+    min-height:20vh;
+    width:100%;
+
+}
+
+
+.trade_box{
+    display:flex;
+    flex-flow:column nowrap;
+    width:30rem;
+    align-items: center;
+    justify-content:space-around;
+    min-height:30rem;
+    background-color:pink;
+    border-radius:1rem;
+    margin:2rem;
+
+}
+
+.trade_box .trade_action{
+    display: flex;
+    flex-flow:row wrap;
+    width:100%;
+    justify-content:space-around;
+    align-items: center;
+    height:6rem;
+}
+
+.trade_box .trade_action button{
+    height:4rem;
+    width:40%;
+    font-size:1.5rem;
+    font-weight:700;
+    border-radius:1rem;
+    border:none;
+    cursor:pointer;
+}
+
+.trade_box .estimation_board{
+    display:flex;
+    flex-flow: row wrap;
+    justify-content:center;
+    align-items:center;
+    min-width:10rem;
+    height:5rem;
+    background-color: rgb(223, 194, 194);
+    border-radius:2rem;
+    
+
+}
+
+.trade_box .estimation_board h1{
+    font-family: monospace;
+
+}
+
+.trade_box .header{
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    width:80%;
+    height:5rem;
+    border-radius:2rem;
+    position: static;
+    margin:-10% 0 0 0;
+    background-color: white;
+}
+
+.trade_box .header h1{
+    color:rgb(36, 34, 34)
+    
+}
+
+.trade_network{
+    display: flex;
+    align-items: center;
+    justify-content:center; 
+    width:100%;
+    height:2rem;
+}
+
+
+.trade_network form{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:80%;
+    height:auto;
+}
+.trade_network form .network_label{
+    font-weight:700;
+    font-size:1.5rem;
+
+
+}
+
+
+
+.trade_network form select{
+    padding:1rem;
+    border-radius:2rem;
+}
+
+
+.trade_box .purchase_form{
+    display:flex;
+    flex-flow:column nowrap;
+    align-items:center;
+    justify-content:center;
+    width:80%;
+    height:5rem;
+    box-sizing:border-box;
+}
+
+.trade_box .purchase_form input{
+    width:90%;
+    height:3rem;
+    border-radius:2rem;
+    font-size:1.5rem;
+    border: none;
+    padding:1rem;
+}
+
+
+.trade_box .trade_action .buy:hover {
+    background-color:red;
+    color:white;
+
+
+}
+
+.trade_box .trade_action .sell:hover{
+    background-color:red;
+    color:white;
+
+}
+
