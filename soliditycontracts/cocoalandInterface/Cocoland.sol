@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import "@chainlink/contracts/src/v0.8/vrf/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
@@ -7,6 +7,7 @@ import "@chainlink/contracts/src/v0.8/vrf/VRFConsumerBaseV2.sol";
 import {OwnerIsCreator} from "@chainlink/contracts-ccip/src/v0.8/shared/access/OwnerIsCreator.sol";
 import {IRouterClient} from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/IRouterClient.sol";
 import {Client} from "@chainlink/contracts-ccip/src/v0.8/ccip/libraries/Client.sol";
+import {CCIPReceiver} from "@chainlink/contracts-ccip/src/v0.8/ccip/applications/CCIPReceiver.sol";
 import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.0/token/ERC20/IERC20.sol";
 import {LinkTokenInterface} from "@chainlink/contracts/src/v0.8/interfaces/LinkTokenInterface.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
@@ -44,7 +45,7 @@ interface CocoaLandPool{
 }
 
 
-contract CrosschainCocoaLand is OwnerIsCreator {
+contract CrosschainCocoaLand is CCIPReceiver, OwnerIsCreator {
     using Counters for Counters.Counter;
     AggregatorV3Interface internal dataFeed;
 
@@ -68,6 +69,14 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     error NotEnoughBalance(uint256 currentBalance, uint256 calculatedFees); 
     error DestinationChainNotWhitelisted(uint64 destinationChainSelector);
     error NothingToWithdraw();
+    mapping(uint64 => bool) public whitelistedSourceChains;
+    mapping(address => bool) public whitelistedSenders;
+
+    event CallSuccessfull();
+
+    error SourceChainNotWhitelisted(uint64 sourceChainSelector);
+    error SenderNotWhitelisted(address sender);
+
 
 
     event sharesTransfer(
@@ -88,6 +97,10 @@ contract CrosschainCocoaLand is OwnerIsCreator {
         uint256 fees // The fees paid for sending the message.  
     );
 
+    event received(
+        address sender
+    );
+
 
     mapping(address=> DematAccount[]) public sharesAccount;
 
@@ -98,15 +111,10 @@ contract CrosschainCocoaLand is OwnerIsCreator {
 
     struct DematAccount {
         uint256 shares;
+        uint256 nftid;
         uint256 id;
     }
 
-    struct programmableData{
-        uint256 nftId;
-        uint256 tokenAmount;
-        uint256 shares;
-        address sender;
-    }
 
     // Contract address on Polygon Amoy
     address private cocoalandNFTAddress = 0x0f4987C38Ff501eE799C7E96B0b075a6f2770245;
@@ -122,6 +130,17 @@ contract CrosschainCocoaLand is OwnerIsCreator {
 
     CocoaLandPool private pool;
 
+    // Routers to receive from avalanche
+    address public Router_Receiver;
+
+    // Router to send polygon to avalanche
+    address public RouterContract;
+
+    address private s_chain;
+
+
+    // 
+
 
     
 
@@ -129,15 +148,39 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     uint256 private gasLimit = 200_000;
 
 
-    constructor(address _router, address _link) {
-        router = IRouterClient(_router);
+    constructor(address _link) CCIPReceiver(Router_Receiver)
+     {
+        if(block.chainid == 11155111){
+            dataFeed = AggregatorV3Interface(
+            0x694AA1769357215DE4FAC081bf1f309aDC325306
+            );
+
+        }else if(block.chainid == 43113){
+            dataFeed = AggregatorV3Interface(
+                0x5498BB86BC934c8D34FDA08E81D444153d0D06aD
+            );
+
+        }else if(block.chainid == 80002){
+
+             dataFeed = AggregatorV3Interface(
+            0x001382149eBa3441043c1c66972b4772963f5D43
+        );
+
+        }else if(block.chainid == 534351){
+            dataFeed = AggregatorV3Interface(
+            0x59F1ec1f10bD7eD9B938431086bC1D9e233ECf41
+            );
+
+        }else{
+            revert("network not supported");
+
+        }
+        router = IRouterClient(RouterContract);
         linkToken = LinkTokenInterface(_link);
         dynamicNFT = CocoaLandInfographicNFT(cocoalandNFTAddress);
         farmtoken = CocoaLandToken(cocoalandTokenAddress);
         pool = CocoaLandPool(cocoalandTokenPool);
-        dataFeed = AggregatorV3Interface(
-            0x001382149eBa3441043c1c66972b4772963f5D43
-        );
+       
     }
 
     function getChainlinkDataFeedLatestAnswer() public view returns (int) {
@@ -174,6 +217,8 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     ) external onlyOwner {
         whitelistedChains[_destinationChainSelector] = false;
     }
+
+    
     
 
 
@@ -237,7 +282,8 @@ contract CrosschainCocoaLand is OwnerIsCreator {
         
         DematAccount memory account = DematAccount({
             shares: sharesAmount,
-            id:id
+            nftid:id,
+            id:sharesAccount[msg.sender].length
         });
         pool.fund();
         dynamicNFT.safeMint(msg.sender);
@@ -286,6 +332,9 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     onlyOwner onlyWhitelistedChain(_destinationChainSelector)
     returns (bytes32 messageId) 
     {
+        DematAccount memory shareAccount = sharesAccount[msg.sender][_index];
+        require(shareAccount.shares != 0,"This account no longer exist");
+        resetDematAccount(msg.sender, _index);
         Client.EVMTokenAmount[]
             memory tokenAmounts = new Client.EVMTokenAmount[](1);
         Client.EVMTokenAmount memory tokenAmount = Client.EVMTokenAmount({
@@ -297,7 +346,7 @@ contract CrosschainCocoaLand is OwnerIsCreator {
 
         Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
             receiver: abi.encode(_receiver),
-            data: abi.encodeWithSignature("mintDematAccount(address,uint256,DematAccount)", msg.sender,_index,_sharesAccount),
+            data: abi.encodeWithSignature("mintDematAccount(address,DematAccount)", msg.sender,_index,_sharesAccount),
             tokenAmounts: tokenAmounts,
             extraArgs: Client._argsToBytes(
                 Client.EVMExtraArgsV1({gasLimit: gasLimit})
@@ -402,6 +451,20 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     
 }
 
+    function _ccipReceive(
+            Client.Any2EVMMessage memory message
+        ) 
+            internal
+            onlyWhitelistedSourceChain(message.sourceChainSelector)
+            onlyWhitelistedSenders(abi.decode(message.sender, (address))) 
+            override 
+        {
+            require(message.destTokenAmounts[0].amount >= 0, "Not enough CCIP-BnM for mint");
+            (bool success, ) = address(this).call(message.data);
+            require(success);
+            emit CallSuccessfull();
+        }
+
      
 
 
@@ -460,18 +523,26 @@ contract CrosschainCocoaLand is OwnerIsCreator {
     function resetDematAccount(address _owner, uint256 _index) private{
         DematAccount memory dematAccount = DematAccount({
             shares:0,
-            id:0});
+            nftid:0,
+            id:_index});
         sharesAccount[_owner][_index] = dematAccount;
     }
 
-    function mintDematAccount(address _owner, uint256 _index, DematAccount memory _dematAccount) private{
-        uint256 registeredPosition = indicator + _index;
+    function mintDematAccount(address _owner, DematAccount memory _dematAccount) private{
+        uint256 registeredPosition = _dematAccount.id;
         sharesAccount[_owner][registeredPosition] = _dematAccount;
+
+
     }
 
 
     //function to update token price 
     function updateTokenPrice(uint256 _newPrice) public authorized{
+        
+
+    }
+
+    function updateRouter(address _receiverRouter) public authorized{
 
     }
 
@@ -490,6 +561,45 @@ contract CrosschainCocoaLand is OwnerIsCreator {
         require(authorize[msg.sender],"You are not authorize to use this function");
         _;
     }
+
+    // Receiver Modifiers
+
+    modifier onlyWhitelistedSourceChain(uint64 _sourceChainSelector) {
+        if (!whitelistedSourceChains[_sourceChainSelector])
+            revert SourceChainNotWhitelisted(_sourceChainSelector);
+        _;
+    }
+
+     modifier onlyWhitelistedSenders(address _sender) {
+        if (!whitelistedSenders[_sender]) revert SenderNotWhitelisted(_sender);
+        _;
+    }
+
+    function whitelistSourceChain(
+        uint64 _sourceChainSelector
+    ) external onlyOwner {
+        whitelistedSourceChains[_sourceChainSelector] = true;
+    }
+
+    function denylistSourceChain(
+        uint64 _sourceChainSelector
+    ) external onlyOwner {
+        whitelistedSourceChains[_sourceChainSelector] = false;
+    }
+
+    function whitelistSender(address _sender) external onlyOwner {
+        whitelistedSenders[_sender] = true;
+    }
+
+    function denySender(address _sender) external onlyOwner {
+        whitelistedSenders[_sender] = false;
+    }
+
+
+    receive() external payable { 
+        emit received(msg.sender);
+    }
+
 
 }
 
